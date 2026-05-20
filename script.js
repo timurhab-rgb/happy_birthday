@@ -7,7 +7,7 @@ function updateParallax() {
     const maxScroll = document.body.scrollHeight - window.innerHeight;
     let percent = maxScroll > 0 ? scrollY / maxScroll : 0;
     percent = Math.min(1, Math.max(0, percent));
-    const verticalPosition = percent * 100;
+    const verticalPosition = Math.min(1, percent * 0.5) * 100;
     parallaxBg.style.backgroundPosition = `center ${verticalPosition}%`;
     ticking = false;
 }
