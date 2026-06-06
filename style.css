@@ -1,0 +1,260 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Playfair Display', 'Dancing Script', serif;
+    overflow-x: hidden;
+    background-color: #1a0303;
+    position: relative;
+}
+
+/* ИСПРАВЛЕННЫЙ ПАРАЛЛАКС — без чёрных полос */
+.parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;                 /* точно на весь экран */
+    background-image: url("фон6.jpg");
+    background-size: cover;
+    background-position: bottom;   /* при открытии — нижняя часть */
+    background-repeat: no-repeat;
+    z-index: 0;
+    /* больше никаких transform и transition */
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.68);
+    backdrop-filter: blur(1.2px);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* остальные стили остаются без изменений */
+.heart-section,
+.gallery-section {
+    position: relative;
+    z-index: 2;
+}
+
+.heart-section {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    animation: gentleAppear 0.9s ease-out;
+}
+
+.heart {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    background: linear-gradient(135deg, #ff1a1a, #cc0000);
+    transform: rotate(-45deg);
+    animation: heartbeatPremium 1.2s ease-in-out infinite;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(255, 30, 30, 0.8), inset 0 0 15px rgba(255, 255, 200, 0.4);
+    transition: transform 0.1s ease;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: inherit;
+    border-radius: 50%;
+    box-shadow: inherit;
+}
+
+.heart::before {
+    top: -80px;
+    left: 0;
+}
+
+.heart::after {
+    top: 0;
+    left: 80px;
+}
+
+@keyframes heartbeatPremium {
+    0% { transform: scale(1) rotate(-45deg); opacity: 0.92; }
+    25% { transform: scale(1.22) rotate(-45deg); opacity: 1; }
+    35% { transform: scale(1.08) rotate(-45deg); }
+    45% { transform: scale(1.19) rotate(-45deg); }
+    55% { transform: scale(1) rotate(-45deg); }
+    100% { transform: scale(1) rotate(-45deg); }
+}
+
+@keyframes gentleAppear {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #ff5e5e;
+    text-shadow: 0 0 8px #aa0000, 0 0 12px #ff1a1a;
+    cursor: pointer;
+    z-index: 15;
+    animation: bounceSoft 2s infinite;
+}
+
+.scroll-hint:hover {
+    transform: translateX(-50%) scale(1.2);
+    color: #ffb3b3;
+}
+
+@keyframes bounceSoft {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(14px); }
+}
+
+.gallery-section {
+    padding: 70px 5% 110px;
+}
+
+.gallery-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+}
+
+.photo-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.photo-row:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.photo-box {
+    flex: 1;
+    min-width: 45%;
+    width: 50%;
+    opacity: 0;
+    transform: translateY(35px);
+    transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.1), transform 0.8s ease;
+}
+
+.photo-box.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.photo-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 28px;
+    box-shadow: 0 18px 32px -10px rgba(255, 50, 50, 0.4);
+    transition: transform 0.35s ease, box-shadow 0.3s;
+    border: 1px solid #aa3333;
+    background-color: #2a0a0a;
+}
+
+.photo-img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 26px 38px -12px rgba(255, 0, 0, 0.65);
+}
+
+.caption-box {
+    flex: 1;
+    width: 50%;
+    padding: 20px;
+    text-align: left;
+}
+
+.caption-text {
+    font-family: 'Playfair Display', 'Dancing Script', serif;
+    font-size: 1.65rem;
+    font-weight: 500;
+    font-style: italic;
+    color: #ff7171;
+    line-height: 1.45;
+    text-shadow: 0 1px 3px #2c0000;
+    background: rgba(25, 5, 5, 0.6);
+    padding: 18px 26px;
+    border-radius: 48px;
+    border-left: 6px solid #ff4d4d;
+    backdrop-filter: blur(4px);
+}
+
+.floating-text {
+    position: fixed;
+    font-family: 'Dancing Script', cursive;
+    font-weight: bold;
+    font-size: 2.4rem;          /* было 1.4rem — теперь крупнее */
+    color: #ffcccc;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff4444;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1000;
+    will-change: transform, opacity;
+    animation: floatAway 1.6s ease-out forwards;
+}
+
+@keyframes floatAway {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.7);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--dx), var(--dy)) scale(1.5);  /* увеличен конечный масштаб */
+    }
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .floating-text {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-text {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .photo-row { flex-direction: column !important; gap: 20px; }
+    .photo-box, .caption-box { width: 100%; }
+    .caption-text { font-size: 1.4rem; text-align: center; }
+    .gallery-container { gap: 50px; }
+    .heart { width: 115px; height: 115px; }
+    .heart::before, .heart::after { width: 115px; height: 115px; }
+    .heart::before { top: -57.5px; }
+    .heart::after { left: 57.5px; }
+    .scroll-hint { font-size: 1.9rem; bottom: 20px; }
+    .floating-text { font-size: 1rem; }
+}
+
+@media (max-width: 480px) {
+    .caption-text { font-size: 1.2rem; padding: 12px 20px; }
+    .gallery-section { padding: 45px 5% 80px; }
+    .floating-text { font-size: 0.9rem; }
+}
